@@ -2,6 +2,7 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/10643b4e8cab7c753520/maintainability)](https://codeclimate.com/github/alexrunfire/frontend-project-lvl2/maintainability)
 
+![Node.js CI](https://github.com/alexrunfire/frontend-project-lvl2/workflows/Node.js%20CI/badge.svg)
 
 ## Setup
 
