@@ -32,5 +32,7 @@ export default (firstConfig, secondConfig) => {
     firstDiff,
   );
   const resultInArr = ['{', ...resultDiff, '}'];
-  console.log(resultInArr.join('\n'));
+  const result = resultInArr.join('\n');
+  console.log(result);
+  return result;
 };
