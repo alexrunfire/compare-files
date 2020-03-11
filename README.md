@@ -6,8 +6,7 @@
 ## Setup
 
 ```sh
-$ npm install gendiff
-$ npm install --save-dev gendiff
+$ npm ci
 ```
 
 ## Find difference between two .json files
