@@ -7,8 +7,8 @@ describe('Find difference', () => {
   const getRelativePath = (fileName) => path.join('__fixtures__', fileName);
 
   test('compare json files', () => {
-    const before = getAbsolutePath('before.json');
-    const after = getRelativePath('after.json');
+    const beforeJson = getAbsolutePath('before.json');
+    const afterJson = getRelativePath('after.json');
     const result = [
       '{',
       '    host: hexlet.io',
@@ -20,12 +20,12 @@ describe('Find difference', () => {
       '  + verbose: true',
       '}',
     ].join('\n');
-    expect(gendiff(before, after)).toEqual(result);
+    expect(gendiff(beforeJson, afterJson)).toEqual(result);
   });
 
   test('compare yml files', () => {
-    const before = getRelativePath('before.yml');
-    const after = getAbsolutePath('after.yml');
+    const beforeYml = getRelativePath('before.yml');
+    const afterYml = getAbsolutePath('after.yml');
     const result = [
       '{',
       '    host: hexlet.io',
@@ -37,6 +37,6 @@ describe('Find difference', () => {
       '  + verbose: true',
       '}',
     ].join('\n');
-    expect(gendiff(before, after)).toEqual(result);
+    expect(gendiff(beforeYml, afterYml)).toEqual(result);
   });
 });
