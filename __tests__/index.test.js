@@ -24,8 +24,8 @@ describe('Find difference', () => {
   });
 
   test('compare yml files', () => {
-    const before = getAbsolutePath('before.yml');
-    const after = getRelativePath('after.yml');
+    const before = getRelativePath('before.yml');
+    const after = getAbsolutePath('after.yml');
     const result = [
       '{',
       '    host: hexlet.io',
