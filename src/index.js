@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 
-const path = require('path');
+import parser from './parsers';
 
-const fs = require('fs');
+const path = require('path');
 
 const _ = require('lodash');
 
 export default (firstConfig, secondConfig) => {
   const getAbsolutePath = (relativePath) => path.resolve(process.cwd(), relativePath);
-  const getFilePath = (pathToFile) => (pathToFile[0] === '/' ? pathToFile : getAbsolutePath(pathToFile));
+  const getFilePath = (pathToFile) => (path.isAbsolute(pathToFile)
+    ? pathToFile : getAbsolutePath(pathToFile));
   const firstFilePath = getFilePath(firstConfig);
-  const getSecondPath = getFilePath(secondConfig);
-  const firstFile = JSON.parse(fs.readFileSync(firstFilePath));
-  const secondFile = JSON.parse(fs.readFileSync(getSecondPath));
+  const secondFilePath = getFilePath(secondConfig);
+  const [firstFile, secondFile] = parser(firstFilePath, secondFilePath);
   const firstFileToArr = Object.entries(firstFile);
   const secondFileToArr = Object.entries(secondFile);
   const getElemToSt = (key, value, indicator = ' ') => `  ${indicator} ${[key, value].join(': ')}`;

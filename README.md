@@ -16,3 +16,10 @@ $ npm ci
 $ gendiff <...path/before.json> <...path/after.json>
 ```
 [![asciicast](https://asciinema.org/a/Ukz3urFnprwKp4rJPBe6nqBS4.svg)](https://asciinema.org/a/Ukz3urFnprwKp4rJPBe6nqBS4)
+
+## Find difference between two .yml files
+
+```sh
+$ gendiff <...path/before.yml> <...path/after.yml>
+```
+[![asciicast](https://asciinema.org/a/k9SjIyBeVJw2UjkCT2PpwjvyV.svg)](https://asciinema.org/a/k9SjIyBeVJw2UjkCT2PpwjvyV)
