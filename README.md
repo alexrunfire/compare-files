@@ -23,3 +23,10 @@ $ gendiff <...path/before.json> <...path/after.json>
 $ gendiff <...path/before.yml> <...path/after.yml>
 ```
 [![asciicast](https://asciinema.org/a/k9SjIyBeVJw2UjkCT2PpwjvyV.svg)](https://asciinema.org/a/k9SjIyBeVJw2UjkCT2PpwjvyV)
+
+## Find difference between two .ini files
+
+```sh
+$ gendiff <...path/before.ini> <...path/after.ini>
+```
+[![asciicast](https://asciinema.org/a/Ki9cIwZlbtIZOru8QiErOJgCh.svg)](https://asciinema.org/a/Ki9cIwZlbtIZOru8QiErOJgCh)
