@@ -6,12 +6,16 @@ const path = require('path');
 
 const _ = require('lodash');
 
-const makeString = (deepLevel, sign = ' ') => (deepLevel === 0 ? '' : `${sign} `.padStart(deepLevel * 4));
+const makeDeep = (deepLevel, sign = ' ') => (deepLevel === 0
+  ? '' : `${sign} `.padStart(deepLevel * 4));
 
 const stringify = (object, deepLevel) => {
   const objToArr = Object.entries(object);
-  const result = objToArr.map(([key, value]) => (typeof value === 'object' ? `${makeString(deepLevel)}${key}: ${stringify(value, deepLevel + 1)}` : `${makeString(deepLevel)}${key}: ${value}`));
-  return ['{', ...result, `${makeString(deepLevel - 1)}}`].join('\n');
+  const result = objToArr.map(([key, value]) => (
+    typeof value === 'object'
+      ? `${makeDeep(deepLevel)}${key}: ${stringify(value, deepLevel + 1)}`
+      : `${makeDeep(deepLevel)}${key}: ${value}`));
+  return ['{', ...result, `${makeDeep(deepLevel - 1)}}`].join('\n');
 };
 
 const getDiff = (firstObj, secondObj, deepLevel = 1) => {
@@ -20,29 +24,33 @@ const getDiff = (firstObj, secondObj, deepLevel = 1) => {
     if (_.has(secondObj, key)) {
       const newValue = secondObj[key];
       if (typeof value === 'object') {
-        if (typeof newValue === 'object') {
-          return `${makeString(deepLevel)}${key}: ${getDiff(value, newValue, deepLevel + 1)}`;
-        }
-        return [`${makeString(deepLevel, '+')}${key}: ${newValue}`, `${makeString(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`].join('\n');
+        return typeof newValue === 'object'
+          ? `${makeDeep(deepLevel)}${key}: ${getDiff(value, newValue, deepLevel + 1)}`
+          : [`${makeDeep(deepLevel, '+')}${key}: ${newValue}`,
+            `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`].join('\n');
       }
       if (typeof newValue === 'object') {
-        return [`${makeString(deepLevel, '+')}${key}: ${stringify(newValue, deepLevel + 1)}`, `${makeString(deepLevel, '-')}${key}: ${value}`].join('\n');
+        return [
+          `${makeDeep(deepLevel, '+')}${key}: ${stringify(newValue, deepLevel + 1)}`,
+          `${makeDeep(deepLevel, '-')}${key}: ${value}`,
+        ].join('\n');
       }
-      if (value === newValue) {
-        return `${makeString(deepLevel)}${key}: ${value}`;
-      }
-      return [`${makeString(deepLevel, '+')}${key}: ${newValue}`, `${makeString(deepLevel, '-')}${key}: ${value}`].join('\n');
+      return value === newValue
+        ? `${makeDeep(deepLevel)}${key}: ${value}`
+        : [`${makeDeep(deepLevel, '+')}${key}: ${newValue}`,
+          `${makeDeep(deepLevel, '-')}${key}: ${value}`].join('\n');
     }
-    if (typeof value === 'object') {
-      return `${makeString(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`;
-    }
-    return `${makeString(deepLevel, '-')}${key}: ${value}`;
+    return typeof value === 'object'
+      ? `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`
+      : `${makeDeep(deepLevel, '-')}${key}: ${value}`;
   });
   const secondFileToArr = Object.entries(secondObj);
   const uniqElem = secondFileToArr.filter(([key]) => !(_.has(firstObj, key)));
-  const secondDiff = uniqElem.map(([key, value]) => (typeof value === 'object' ? [`${makeString(deepLevel, '+')}${key}`, stringify(value, deepLevel + 1)].join(': ') : [`${makeString(deepLevel, '+')}${key}`, value].join(': ')));
-  const xyi = ['{', ...firstDiff, ...secondDiff, `${makeString(deepLevel - 1)}}`].join('\n');
-  return xyi;
+  const secondDiff = uniqElem.map(([key, value]) => (
+    typeof value === 'object'
+      ? [`${makeDeep(deepLevel, '+')}${key}`, stringify(value, deepLevel + 1)].join(': ')
+      : [`${makeDeep(deepLevel, '+')}${key}`, value].join(': ')));
+  return ['{', ...firstDiff, ...secondDiff, `${makeDeep(deepLevel - 1)}}`].join('\n');
 };
 
 export default (firstConfig, secondConfig) => {
@@ -52,5 +60,7 @@ export default (firstConfig, secondConfig) => {
   const firstFilePath = getFilePath(firstConfig);
   const secondFilePath = getFilePath(secondConfig);
   const [firstFile, secondFile] = parser(firstFilePath, secondFilePath);
-  return getDiff(firstFile, secondFile);
+  const difference = getDiff(firstFile, secondFile);
+  console.log(difference);
+  return difference;
 };

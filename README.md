@@ -10,23 +10,33 @@
 $ npm ci
 ```
 
-## Find difference between two .json files
+## Find difference between two plain files
+
+### .json
 
 ```sh
 $ gendiff <...path/before.json> <...path/after.json>
 ```
 [![asciicast](https://asciinema.org/a/Ukz3urFnprwKp4rJPBe6nqBS4.svg)](https://asciinema.org/a/Ukz3urFnprwKp4rJPBe6nqBS4)
 
-## Find difference between two .yml files
+### .yml
 
 ```sh
 $ gendiff <...path/before.yml> <...path/after.yml>
 ```
 [![asciicast](https://asciinema.org/a/k9SjIyBeVJw2UjkCT2PpwjvyV.svg)](https://asciinema.org/a/k9SjIyBeVJw2UjkCT2PpwjvyV)
 
-## Find difference between two .ini files
+### .ini
 
 ```sh
 $ gendiff <...path/before.ini> <...path/after.ini>
 ```
 [![asciicast](https://asciinema.org/a/Ki9cIwZlbtIZOru8QiErOJgCh.svg)](https://asciinema.org/a/Ki9cIwZlbtIZOru8QiErOJgCh)
+
+## Find difference between two deep files(.json , .yml , .ini)
+
+```sh
+$ gendiff <...path/before.format> <...path/after.format>
+```
+
+[![asciicast](https://asciinema.org/a/GmQCS2mD1jnEpTKnspR2Vks5P.svg)](https://asciinema.org/a/GmQCS2mD1jnEpTKnspR2Vks5P)
