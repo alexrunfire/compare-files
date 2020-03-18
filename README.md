@@ -33,10 +33,18 @@ $ gendiff <...path/before.ini> <...path/after.ini>
 ```
 [![asciicast](https://asciinema.org/a/Ki9cIwZlbtIZOru8QiErOJgCh.svg)](https://asciinema.org/a/Ki9cIwZlbtIZOru8QiErOJgCh)
 
-## Find difference between two deep files(.json , .yml , .ini)
+## Find difference between two files in default(classic) format(.json , .yml , .ini)
 
 ```sh
 $ gendiff <...path/before.format> <...path/after.format>
 ```
 
 [![asciicast](https://asciinema.org/a/GmQCS2mD1jnEpTKnspR2Vks5P.svg)](https://asciinema.org/a/GmQCS2mD1jnEpTKnspR2Vks5P)
+
+## Find difference between two files in plain format(.json , .yml , .ini)
+
+```sh
+$ gendiff <...path/before.format> <...path/after.format>
+```
+
+[![asciicast](https://asciinema.org/a/F3irw437AbZ93tmU2sJZmeADF.svg)](https://asciinema.org/a/F3irw437AbZ93tmU2sJZmeADF)

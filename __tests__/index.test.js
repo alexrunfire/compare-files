@@ -5,7 +5,7 @@ import gendiff from '../src';
 const getAbsolutePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
 const getRelativePath = (fileName) => path.join('__fixtures__', fileName);
 
-const result = [
+const classicResult = [
   '{',
   '    common: {',
   '        setting1: Value 1',
@@ -42,8 +42,24 @@ const result = [
   '}',
 ].join('\n');
 
+const plainResult = [
+  "Property 'common.setting2' was deleted",
+  "Property 'common.setting3' was changed from true to [complex value]",
+  "Property 'common.setting6.ops' was added with value: 'vops'",
+  "Property 'common.follow' was added with value: false",
+  "Property 'common.setting4' was added with value: 'blah blah'",
+  "Property 'common.setting5' was added with value: [complex value]",
+  "Property 'group1.baz' was changed from 'bas' to 'bars'",
+  "Property 'group1.nest' was changed from [complex value] to 'str'",
+  "Property 'group2' was deleted",
+  "Property 'group3' was added with value: [complex value]",
+].join('\n');
+
 test.each([
-  [getAbsolutePath('before.json'), getRelativePath('after.json'), result],
-  [getRelativePath('before.yml'), getAbsolutePath('after.yml'), result],
-  [getRelativePath('before.ini'), getRelativePath('after.ini'), result],
-])('Find difference', (before, after, expected) => expect(gendiff(before, after)).toBe(expected));
+  [getAbsolutePath('before.json'), getRelativePath('after.json'), 'classic', classicResult],
+  [getRelativePath('before.yml'), getAbsolutePath('after.yml'), 'classic', classicResult],
+  [getRelativePath('before.ini'), getRelativePath('after.ini'), 'classic', classicResult],
+  [getAbsolutePath('before.json'), getRelativePath('after.json'), 'plain', plainResult],
+  [getRelativePath('before.yml'), getAbsolutePath('after.yml'), 'plain', plainResult],
+  [getRelativePath('before.ini'), getRelativePath('after.ini'), 'plain', plainResult],
+])('Find difference', (before, after, format, expected) => expect(gendiff(before, after, format)).toBe(expected));
