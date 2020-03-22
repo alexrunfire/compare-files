@@ -17,20 +17,21 @@ const stringify = (value, deepLevel) => {
   return ['{', ...result, `${makeDeep(deepLevel - 1)}}`].join('\n');
 };
 
-const makeItem = (key, value, newValue, deepLevel) => (value === newValue
-  ? `${makeDeep(deepLevel)}${key}: ${value}`
-  : [`${makeDeep(deepLevel, '+')}${key}: ${stringify(newValue, deepLevel + 1)}`,
-    `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`].join('\n'));
-
 const getDiff = (firstFile, secondFile, deepLevel = 1) => {
+  const makeItem = (iKey, iValue, iNewValue) => {
+    if (_.isObject(iValue) && _.isObject(iNewValue)) {
+      return `${makeDeep(deepLevel)}${iKey}: ${getDiff(iValue, iNewValue, deepLevel + 1)}`;
+    }
+    return iValue === iNewValue
+      ? `${makeDeep(deepLevel)}${iKey}: ${iValue}`
+      : [`${makeDeep(deepLevel, '+')}${iKey}: ${stringify(iNewValue, deepLevel + 1)}`,
+        `${makeDeep(deepLevel, '-')}${iKey}: ${stringify(iValue, deepLevel + 1)}`].join('\n');
+  };
   const firstFileToArr = Object.entries(firstFile);
   const firstDiff = firstFileToArr.map(([key, value]) => {
     if (_.has(secondFile, key)) {
       const newValue = secondFile[key];
-      if (_.isObject(value) && _.isObject(newValue)) {
-        return `${makeDeep(deepLevel)}${key}: ${getDiff(value, newValue, deepLevel + 1)}`;
-      }
-      return makeItem(key, value, newValue, deepLevel);
+      return makeItem(key, value, newValue);
     }
     return `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`;
   });
