@@ -2,9 +2,11 @@
 
 import parser from './parsers';
 
-import getClassic from './formatters/classic';
+import getDefault from './formatters/default';
 
 import getPlain from './formatters/plain';
+
+import getJSON from './formatters/json';
 
 const path = require('path');
 
@@ -17,11 +19,14 @@ export default (firstConfig, secondConfig, format) => {
   const [firstFile, secondFile] = parser(firstFilePath, secondFilePath);
   const getDifference = () => {
     switch (format) {
-      case 'classic':
-        return getClassic(firstFile, secondFile);
+      case 'default':
+        return getDefault(firstFile, secondFile);
 
       case 'plain':
         return getPlain(firstFile, secondFile);
+
+      case 'JSON':
+        return getJSON(firstFile, secondFile);
 
       default:
         return 'The format is incorrect.';

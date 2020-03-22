@@ -1,0 +1,77 @@
+[
+  {
+    "common": [
+      {
+        "setting1": "Value 1",
+        "message": []
+      },
+      {
+        "setting2": 200,
+        "message": "was deleted"
+      },
+      {
+        "setting3": {
+          "key": "value"
+        },
+        "message": "was changed from true"
+      },
+      {
+        "setting6": [
+          {
+            "key": "value",
+            "message": []
+          },
+          {
+            "ops": "vops",
+            "message": "was added"
+          }
+        ],
+        "message": []
+      },
+      {
+        "follow": false,
+        "message": "was added"
+      },
+      {
+        "setting4": "blah blah",
+        "message": "was added"
+      },
+      {
+        "setting5": {
+          "key5": "value5"
+        },
+        "message": "was added"
+      }
+    ],
+    "message": []
+  },
+  {
+    "group1": [
+      {
+        "baz": "bars",
+        "message": "was changed from 'bas'"
+      },
+      {
+        "foo": "bar",
+        "message": []
+      },
+      {
+        "nest": "str",
+        "message": "was changed from [complex value]"
+      }
+    ],
+    "message": []
+  },
+  {
+    "group2": {
+      "abc": 12345
+    },
+    "message": "was deleted"
+  },
+  {
+    "group3": {
+      "fee": 100500
+    },
+    "message": "was added"
+  }
+]

@@ -44,7 +44,15 @@ $ gendiff <...path/before.format> <...path/after.format>
 ## Find difference between two files in plain format(.json , .yml , .ini)
 
 ```sh
-$ gendiff <...path/before.format> <...path/after.format>
+$ gendiff --format plain <...path/before.format> <...path/after.format>
 ```
 
 [![asciicast](https://asciinema.org/a/F3irw437AbZ93tmU2sJZmeADF.svg)](https://asciinema.org/a/F3irw437AbZ93tmU2sJZmeADF)
+
+## Find difference between two files in JSON format(.json , .yml , .ini)
+
+```sh
+$ gendiff --format JSON <...path/before.format> <...path/after.format>
+```
+
+[![asciicast](https://asciinema.org/a/hfiR9z5o0z2OWFFi6yZmhHLc6.svg)](https://asciinema.org/a/hfiR9z5o0z2OWFFi6yZmhHLc6)

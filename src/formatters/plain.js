@@ -2,8 +2,8 @@
 
 const _ = require('lodash');
 
-const isString = (value) => (typeof value === 'string') && (value !== '[complex value]');
-const makeQuotes = (value) => (isString(value) ? `'${value}'` : value);
+const isRequireQuotes = (value) => (_.isString(value)) && (value !== '[complex value]');
+const makeQuotes = (value) => (isRequireQuotes(value) ? `'${value}'` : value);
 
 const getChanged = (property, initialValue, endValue) => {
   const startVal = makeQuotes(initialValue);
@@ -26,12 +26,12 @@ const getDiff = (firstFile, secondFile, acc = []) => {
     const property = [...acc, key].join('.');
     if (_.has(secondFile, key)) {
       const newValue = secondFile[key];
-      if (typeof value === 'object') {
-        return typeof newValue === 'object'
+      if (_.isObject(value)) {
+        return _.isObject(newValue)
           ? getDiff(value, newValue, [...acc, key])
           : getChanged(property, '[complex value]', newValue);
       }
-      return typeof newValue === 'object'
+      return _.isObject(newValue)
         ? getChanged(property, value, '[complex value]')
         : getChanged(property, value, newValue);
     }
@@ -39,7 +39,7 @@ const getDiff = (firstFile, secondFile, acc = []) => {
   });
   const uniqElem = secondFileArr.filter(([key]) => !(_.has(firstFile, key)));
   const secondDiff = uniqElem.map(([key, value]) => (
-    typeof value === 'object'
+    _.isObject(value)
       ? getAdded([...acc, key].join('.'), '[complex value]')
       : getAdded([...acc, key].join('.'), value)));
   return [...firstDiff, ...secondDiff].join('\n');
