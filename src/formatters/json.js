@@ -20,21 +20,19 @@ const makeNum = (value) => {
 
 const makeElement = (key, value, status = []) => ({ [key]: makeNum(value), message: status });
 
+const makeQuotes = (value) => (_.isString(value) ? `'${value}'` : value);
 
-const isRequireQuotes = (value) => (_.isString(value)) && (value !== '[complex value]');
-const makeQuotes = (value) => (isRequireQuotes(value) ? `'${value}'` : value);
+const makePreviousVal = (value) => (_.isObject(value) ? '[complex value]' : makeQuotes(value));
 
-const getChanged = (value) => `was changed from ${makeQuotes(value)}`;
+const getChanged = (value) => `was changed from ${makePreviousVal(value)}`;
 
 const getDiff = (firstFile, secondFile) => {
   const firstFileToArr = Object.entries(firstFile);
   const firstDiff = firstFileToArr.map(([key, value]) => {
     if (_.has(secondFile, key)) {
       const newValue = secondFile[key];
-      if (_.isObject(value)) {
-        return _.isObject(newValue)
-          ? makeElement(key, getDiff(value, newValue))
-          : makeElement(key, newValue, getChanged('[complex value]'));
+      if (_.isObject(value) && _.isObject(newValue)) {
+        return makeElement(key, getDiff(value, newValue));
       }
       return value === newValue
         ? makeElement(key, value)
