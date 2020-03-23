@@ -17,12 +17,6 @@ const stringify = (value, deepLevel) => {
   return ['{', ...result, `${makeDeep(deepLevel - 1)}}`].join('\n');
 };
 
-const getSecondDiff = (firstFile, secondFile, deepLevel) => {
-  const secondFileToArr = Object.entries(secondFile);
-  const uniqElem = secondFileToArr.filter(([key]) => !(_.has(firstFile, key)));
-  return uniqElem.map(([key, value]) => [`${makeDeep(deepLevel, '+')}${key}`, stringify(value, deepLevel + 1)].join(': '));
-};
-
 const getDiff = (firstFile, secondFile, deepLevel = 1) => {
   const getFirstDiff = () => {
     const firstFileToArr = Object.entries(firstFile);
@@ -40,8 +34,13 @@ const getDiff = (firstFile, secondFile, deepLevel = 1) => {
       return `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`;
     });
   };
+  const getSecondDiff = () => {
+    const secondFileToArr = Object.entries(secondFile);
+    const uniqElem = secondFileToArr.filter(([key]) => !(_.has(firstFile, key)));
+    return uniqElem.map(([key, value]) => [`${makeDeep(deepLevel, '+')}${key}`, stringify(value, deepLevel + 1)].join(': '));
+  };
   const firstDiff = getFirstDiff();
-  const secondDiff = getSecondDiff(firstFile, secondFile, deepLevel);
+  const secondDiff = getSecondDiff();
   return ['{', ...firstDiff, ...secondDiff, `${makeDeep(deepLevel - 1)}}`].join('\n');
 };
 
