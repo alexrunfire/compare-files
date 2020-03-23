@@ -17,24 +17,31 @@ const stringify = (value, deepLevel) => {
   return ['{', ...result, `${makeDeep(deepLevel - 1)}}`].join('\n');
 };
 
-const getDiff = (firstFile, secondFile, deepLevel = 1) => {
-  const firstFileToArr = Object.entries(firstFile);
-  const firstDiff = firstFileToArr.map(([key, value]) => {
-    if (_.has(secondFile, key)) {
-      const newValue = secondFile[key];
-      if (_.isObject(value) && _.isObject(newValue)) {
-        return `${makeDeep(deepLevel)}${key}: ${getDiff(value, newValue, deepLevel + 1)}`;
-      }
-      return value === newValue
-        ? `${makeDeep(deepLevel)}${key}: ${value}`
-        : [`${makeDeep(deepLevel, '+')}${key}: ${stringify(newValue, deepLevel + 1)}`,
-          `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`].join('\n');
-    }
-    return `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`;
-  });
+const getSecondDiff = (firstFile, secondFile, deepLevel) => {
   const secondFileToArr = Object.entries(secondFile);
   const uniqElem = secondFileToArr.filter(([key]) => !(_.has(firstFile, key)));
-  const secondDiff = uniqElem.map(([key, value]) => [`${makeDeep(deepLevel, '+')}${key}`, stringify(value, deepLevel + 1)].join(': '));
+  return uniqElem.map(([key, value]) => [`${makeDeep(deepLevel, '+')}${key}`, stringify(value, deepLevel + 1)].join(': '));
+};
+
+const getDiff = (firstFile, secondFile, deepLevel = 1) => {
+  const getFirstDiff = () => {
+    const firstFileToArr = Object.entries(firstFile);
+    return firstFileToArr.map(([key, value]) => {
+      if (_.has(secondFile, key)) {
+        const newValue = secondFile[key];
+        if (_.isObject(value) && _.isObject(newValue)) {
+          return `${makeDeep(deepLevel)}${key}: ${getDiff(value, newValue, deepLevel + 1)}`;
+        }
+        return value === newValue
+          ? `${makeDeep(deepLevel)}${key}: ${value}`
+          : [`${makeDeep(deepLevel, '+')}${key}: ${stringify(newValue, deepLevel + 1)}`,
+            `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`].join('\n');
+      }
+      return `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`;
+    });
+  };
+  const firstDiff = getFirstDiff();
+  const secondDiff = getSecondDiff(firstFile, secondFile, deepLevel);
   return ['{', ...firstDiff, ...secondDiff, `${makeDeep(deepLevel - 1)}}`].join('\n');
 };
 
