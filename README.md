@@ -4,10 +4,12 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/10643b4e8cab7c753520/test_coverage)](https://codeclimate.com/github/alexrunfire/frontend-project-lvl2/test_coverage)
 [![Node.js CI](https://github.com/alexrunfire/frontend-project-lvl2/workflows/Node.js%20CI/badge.svg?branch=master)](https://github.com/alexrunfire/frontend-project-lvl2/actions)
 
+This command line utility finds the difference between two files with .json, .yml, .ini extensions.
+
 ## Setup
 
 ```sh
-$ npm ci
+$ npm install
 ```
 
 ## Find difference between two plain files
@@ -33,7 +35,7 @@ $ gendiff <...path/before.ini> <...path/after.ini>
 ```
 [![asciicast](https://asciinema.org/a/Ki9cIwZlbtIZOru8QiErOJgCh.svg)](https://asciinema.org/a/Ki9cIwZlbtIZOru8QiErOJgCh)
 
-## Find difference between two files in default(classic) format(.json , .yml , .ini)
+## Find difference between two files in default format(.json , .yml , .ini)
 
 ```sh
 $ gendiff <...path/before.format> <...path/after.format>

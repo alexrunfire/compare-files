@@ -10,13 +10,19 @@ import getJSON from './formatters/json';
 
 const path = require('path');
 
+const _ = require('lodash');
+
 export default (firstConfig, secondConfig, format) => {
   const getAbsolutePath = (relativePath) => path.resolve(process.cwd(), relativePath);
   const getFilePath = (pathToFile) => (path.isAbsolute(pathToFile)
     ? pathToFile : getAbsolutePath(pathToFile));
   const firstFilePath = getFilePath(firstConfig);
   const secondFilePath = getFilePath(secondConfig);
-  const [firstFile, secondFile] = parser(firstFilePath, secondFilePath);
+  const parcedFiles = parser(firstFilePath, secondFilePath);
+  if (_.isString(parcedFiles)) {
+    return parcedFiles;
+  }
+  const [firstFile, secondFile] = parcedFiles;
   const getDifference = () => {
     switch (format) {
       case 'default':

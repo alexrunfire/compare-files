@@ -27,22 +27,28 @@ const makePreviousVal = (value) => (_.isObject(value) ? '[complex value]' : make
 const getChanged = (value) => `was changed from ${makePreviousVal(value)}`;
 
 const getDiff = (firstFile, secondFile) => {
-  const firstFileToArr = Object.entries(firstFile);
-  const firstDiff = firstFileToArr.map(([key, value]) => {
-    if (_.has(secondFile, key)) {
-      const newValue = secondFile[key];
-      if (_.isObject(value) && _.isObject(newValue)) {
-        return makeElement(key, getDiff(value, newValue));
+  const getFirstDiff = () => {
+    const firstFileToArr = Object.entries(firstFile);
+    return firstFileToArr.map(([key, value]) => {
+      if (_.has(secondFile, key)) {
+        const newValue = secondFile[key];
+        if (_.isObject(value) && _.isObject(newValue)) {
+          return makeElement(key, getDiff(value, newValue));
+        }
+        return value === newValue
+          ? makeElement(key, value)
+          : makeElement(key, newValue, getChanged(value));
       }
-      return value === newValue
-        ? makeElement(key, value)
-        : makeElement(key, newValue, getChanged(value));
-    }
-    return makeElement(key, value, 'was deleted');
-  });
-  const secondFileToArr = Object.entries(secondFile);
-  const uniqElem = secondFileToArr.filter(([key]) => !(_.has(firstFile, key)));
-  const secondDiff = uniqElem.map(([key, value]) => makeElement(key, value, 'was added'));
+      return makeElement(key, value, 'was deleted');
+    });
+  };
+  const getSecondDiff = () => {
+    const secondFileToArr = Object.entries(secondFile);
+    const uniqElem = secondFileToArr.filter(([key]) => !(_.has(firstFile, key)));
+    return uniqElem.map(([key, value]) => makeElement(key, value, 'was added'));
+  };
+  const firstDiff = getFirstDiff();
+  const secondDiff = getSecondDiff();
   return [...firstDiff, ...secondDiff];
 };
 
