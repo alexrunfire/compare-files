@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 
-import parser from './parsers';
+import parse from './parsers';
 
-import getDefault from './formatters/default';
+import getClassic from './formatters/classic';
 
 import getPlain from './formatters/plain';
 
 import getJSON from './formatters/json';
 
 const path = require('path');
+
+const fs = require('fs');
 
 const _ = require('lodash');
 
@@ -18,27 +20,24 @@ export default (firstConfig, secondConfig, format) => {
     ? pathToFile : getAbsolutePath(pathToFile));
   const firstFilePath = getFilePath(firstConfig);
   const secondFilePath = getFilePath(secondConfig);
-  const parcedFiles = parser(firstFilePath, secondFilePath);
-  if (_.isString(parcedFiles)) {
-    return parcedFiles;
+  const firstFile = fs.readFileSync(firstFilePath, 'utf-8');
+  const secondFile = fs.readFileSync(secondFilePath, 'utf-8');
+  const firstFileExt = path.extname(firstFilePath);
+  const secondFileExt = path.extname(secondFilePath);
+  const filesExt = _.uniq([firstFileExt, secondFileExt]).join('');
+  const parcedFiles = parse(firstFile, secondFile, filesExt);
+  const [firstFileParced, secondFileParced] = parcedFiles;
+  switch (format) {
+    case 'classic':
+      return getClassic(firstFileParced, secondFileParced);
+
+    case 'plain':
+      return getPlain(firstFileParced, secondFileParced);
+
+    case 'json':
+      return getJSON(firstFileParced, secondFileParced);
+
+    default:
+      throw new Error(`Unknown format: '${format}'!`);
   }
-  const [firstFile, secondFile] = parcedFiles;
-  const getDifference = () => {
-    switch (format) {
-      case 'default':
-        return getDefault(firstFile, secondFile);
-
-      case 'plain':
-        return getPlain(firstFile, secondFile);
-
-      case 'JSON':
-        return getJSON(firstFile, secondFile);
-
-      default:
-        return 'The format is incorrect.';
-    }
-  };
-  const difference = getDifference();
-  console.log(difference);
-  return difference;
 };

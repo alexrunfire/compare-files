@@ -1,32 +1,28 @@
-#!/usr/bin/env node
-
-const path = require('path');
-
 const yaml = require('js-yaml');
 
 const ini = require('ini');
 
-const fs = require('fs');
-
-export default (firstFilePath, secondFilePath) => {
-  const firstFile = fs.readFileSync(firstFilePath, 'utf-8');
-  const secondFile = fs.readFileSync(secondFilePath, 'utf-8');
-  const firstFileExt = path.extname(firstFilePath);
-  const secondFileExt = path.extname(firstFilePath);
-  if (!(firstFileExt === secondFileExt)) {
-    return 'Extensions of files must be equal';
-  }
-  switch (firstFileExt) {
+export default (firstFile, secondFile, filesExt) => {
+  const getParcedFiles = (parcer) => {
+    try {
+      const firstFileParced = parcer(firstFile);
+      const secondFileParced = parcer(secondFile);
+      return [firstFileParced, secondFileParced];
+    } catch (e) {
+      throw new Error('Invalid data!');
+    }
+  };
+  switch (filesExt) {
     case '.json':
-      return [JSON.parse(firstFile), JSON.parse(secondFile)];
+      return getParcedFiles(JSON.parse);
 
     case '.yml':
-      return [yaml.safeLoad(firstFile), yaml.safeLoad(secondFile)];
+      return getParcedFiles(yaml.safeLoad);
 
     case '.ini':
-      return [ini.parse(firstFile), ini.parse(secondFile)];
+      return getParcedFiles(ini.parse);
 
     default:
-      return 'Incorrect extension';
+      throw new Error('Unknown extension!');
   }
 };
