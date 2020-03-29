@@ -2,9 +2,9 @@
 
 import parse from './parsers';
 
-import getClassic from './formatters/classic';
+import getTap from './formatters/tap';
 
-import getPlain from './formatters/plain';
+import getStylish from './formatters/stylish';
 
 import getJSON from './formatters/json';
 
@@ -14,28 +14,29 @@ const fs = require('fs');
 
 const _ = require('lodash');
 
+const getAbsolutePath = (relativePath) => path.resolve(process.cwd(), relativePath);
+const getFilePath = (pathToFile) => (path.isAbsolute(pathToFile)
+  ? pathToFile : getAbsolutePath(pathToFile));
+
 export default (firstConfig, secondConfig, format) => {
-  const getAbsolutePath = (relativePath) => path.resolve(process.cwd(), relativePath);
-  const getFilePath = (pathToFile) => (path.isAbsolute(pathToFile)
-    ? pathToFile : getAbsolutePath(pathToFile));
   const firstFilePath = getFilePath(firstConfig);
   const secondFilePath = getFilePath(secondConfig);
   const firstFile = fs.readFileSync(firstFilePath, 'utf-8');
   const secondFile = fs.readFileSync(secondFilePath, 'utf-8');
-  const firstFileExt = path.extname(firstFilePath);
-  const secondFileExt = path.extname(secondFilePath);
+  const firstFileExt = path.extname(firstConfig);
+  const secondFileExt = path.extname(secondConfig);
   const filesExt = _.uniq([firstFileExt, secondFileExt]).join('');
-  const parcedFiles = parse(firstFile, secondFile, filesExt);
-  const [firstFileParced, secondFileParced] = parcedFiles;
+  const firstFileParsed = parse(firstFile, filesExt);
+  const secondFileParsed = parse(secondFile, filesExt);
   switch (format) {
-    case 'classic':
-      return getClassic(firstFileParced, secondFileParced);
+    case 'tap':
+      return getTap(firstFileParsed, secondFileParsed);
 
-    case 'plain':
-      return getPlain(firstFileParced, secondFileParced);
+    case 'stylish':
+      return getStylish(firstFileParsed, secondFileParsed);
 
     case 'json':
-      return getJSON(firstFileParced, secondFileParced);
+      return getJSON(firstFileParsed, secondFileParsed);
 
     default:
       throw new Error(`Unknown format: '${format}'!`);

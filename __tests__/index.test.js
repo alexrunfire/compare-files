@@ -7,25 +7,30 @@ import gendiff from '../src';
 const getAbsolutePath = (fileName) => path.join(__dirname, '..', '__fixtures__', fileName);
 const getRelativePath = (fileName) => path.join('__fixtures__', fileName);
 
-const pathToBeforeJson = getAbsolutePath('before.json');
-const pathToAfterJson = getRelativePath('after.json');
-const pathToBeforeYml = getRelativePath('before.yml');
-const pathToAfterYml = getAbsolutePath('after.yml');
-const pathToBeforeIni = getAbsolutePath('before.ini');
-const pathToAfterIni = getRelativePath('after.ini');
-
-const classicRes = fs.readFileSync(getRelativePath('results/classic'), 'utf-8');
-const plainRes = fs.readFileSync(getRelativePath('results/plain'), 'utf-8');
-const jsonRes = fs.readFileSync(getRelativePath('results/json'), 'utf-8');
+let tapRes;
+let stylishRes;
+let jsonRes;
+beforeAll(() => {
+  tapRes = fs.readFileSync(getRelativePath('results/tap'), 'utf-8');
+  stylishRes = fs.readFileSync(getRelativePath('results/stylish'), 'utf-8');
+  jsonRes = fs.readFileSync(getRelativePath('results/json'), 'utf-8');
+});
 
 describe.each([
-  [pathToBeforeJson, pathToAfterJson],
-  [pathToBeforeYml, pathToAfterYml],
-  [pathToBeforeIni, pathToAfterIni],
+  ['before.json', 'after.json'],
+  ['before.yml', 'after.yml'],
+  ['before.ini', 'after.ini'],
 ])('Compare files', (before, after) => {
-  test('classic format', () => expect(gendiff(before, after, 'classic')).toBe(classicRes));
+  let pathToBefore;
+  let pathToAfter;
+  beforeAll(() => {
+    pathToBefore = getAbsolutePath(before);
+    pathToAfter = getRelativePath(after);
+  });
 
-  test('plain format', () => expect(gendiff(before, after, 'plain')).toBe(plainRes));
+  test('tap format', () => expect(gendiff(pathToBefore, pathToAfter, 'tap')).toBe(tapRes));
 
-  test('json format', () => expect(gendiff(before, after, 'json')).toBe(jsonRes));
+  test('stylish format', () => expect(gendiff(pathToBefore, pathToAfter, 'stylish')).toBe(stylishRes));
+
+  test('json format', () => expect(gendiff(pathToBefore, pathToAfter, 'json')).toBe(jsonRes));
 });
