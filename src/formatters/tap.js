@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const _ = require('lodash');
+import _ from 'lodash';
 
 const makeDeep = (deepLevel, sign = ' ') => (deepLevel === 0
   ? '' : `${sign} `.padStart(deepLevel * 4));
@@ -17,31 +17,33 @@ const stringify = (value, deepLevel) => {
   return ['{', ...result, `${makeDeep(deepLevel - 1)}}`].join('\n');
 };
 
-const getDiff = (firstFile, secondFile, deepLevel = 1) => {
-  const getFirstDiff = () => {
-    const firstFileToArr = Object.entries(firstFile);
-    return firstFileToArr.map(([key, value]) => {
-      if (_.has(secondFile, key)) {
-        const newValue = secondFile[key];
-        if (_.isObject(value) && _.isObject(newValue)) {
-          return `${makeDeep(deepLevel)}${key}: ${getDiff(value, newValue, deepLevel + 1)}`;
-        }
-        return value === newValue
-          ? `${makeDeep(deepLevel)}${key}: ${value}`
-          : [`${makeDeep(deepLevel, '+')}${key}: ${stringify(newValue, deepLevel + 1)}`,
-            `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`].join('\n');
-      }
-      return `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`;
-    });
-  };
-  const getSecondDiff = () => {
-    const secondFileToArr = Object.entries(secondFile);
-    const uniqElem = secondFileToArr.filter(([key]) => !(_.has(firstFile, key)));
-    return uniqElem.map(([key, value]) => [`${makeDeep(deepLevel, '+')}${key}`, stringify(value, deepLevel + 1)].join(': '));
-  };
-  const firstDiff = getFirstDiff();
-  const secondDiff = getSecondDiff();
-  return ['{', ...firstDiff, ...secondDiff, `${makeDeep(deepLevel - 1)}}`].join('\n');
+const getDiff = (diff, deepLevel) => {
+  const tapForm = diff.map((item) => {
+    const {
+      status, key, value, previousValue,
+    } = item;
+    switch (status) {
+      case 'complex':
+        return `${makeDeep(deepLevel)}${key}: ${getDiff(value, deepLevel + 1)}`;
+
+      case 'unchanged':
+        return `${makeDeep(deepLevel)}${key}: ${value}`;
+
+      case 'changed':
+        return [`${makeDeep(deepLevel, '+')}${key}: ${stringify(value, deepLevel + 1)}`,
+          `${makeDeep(deepLevel, '-')}${key}: ${stringify(previousValue, deepLevel + 1)}`].join('\n');
+
+      case 'deleted':
+        return `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`;
+
+      case 'added':
+        return [`${makeDeep(deepLevel, '+')}${key}`, stringify(value, deepLevel + 1)].join(': ');
+
+      default:
+        throw new Error('Error!');
+    }
+  });
+  return ['{', ...tapForm, `${makeDeep(deepLevel - 1)}}`].join('\n');
 };
 
-export default (firstFile, secondFile) => getDiff(firstFile, secondFile);
+export default (diff) => getDiff(diff, 1);

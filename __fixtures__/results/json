@@ -1,77 +1,98 @@
 [
   {
-    "common": [
+    "key": "common",
+    "value": [
       {
-        "setting1": "Value 1",
-        "message": []
+        "key": "setting1",
+        "value": "Value 1",
+        "status": "unchanged"
       },
       {
-        "setting2": 200,
-        "message": "was deleted"
+        "key": "setting2",
+        "value": 200,
+        "status": "deleted"
       },
       {
-        "setting3": {
+        "key": "setting3",
+        "value": {
           "key": "value"
         },
-        "message": "was changed from true"
+        "previousValue": true,
+        "status": "changed"
       },
       {
-        "setting6": [
+        "key": "setting6",
+        "value": [
           {
-            "key": "value",
-            "message": []
+            "key": "key",
+            "value": "value",
+            "status": "unchanged"
           },
           {
-            "ops": "vops",
-            "message": "was added"
+            "key": "ops",
+            "value": "vops",
+            "status": "added"
           }
         ],
-        "message": []
+        "status": "complex"
       },
       {
-        "follow": false,
-        "message": "was added"
+        "key": "follow",
+        "value": false,
+        "status": "added"
       },
       {
-        "setting4": "blah blah",
-        "message": "was added"
+        "key": "setting4",
+        "value": "blah blah",
+        "status": "added"
       },
       {
-        "setting5": {
+        "key": "setting5",
+        "value": {
           "key5": "value5"
         },
-        "message": "was added"
+        "status": "added"
       }
     ],
-    "message": []
+    "status": "complex"
   },
   {
-    "group1": [
+    "key": "group1",
+    "value": [
       {
-        "baz": "bars",
-        "message": "was changed from 'bas'"
+        "key": "baz",
+        "value": "bars",
+        "previousValue": "bas",
+        "status": "changed"
       },
       {
-        "foo": "bar",
-        "message": []
+        "key": "foo",
+        "value": "bar",
+        "status": "unchanged"
       },
       {
-        "nest": "str",
-        "message": "was changed from [complex value]"
+        "key": "nest",
+        "value": "str",
+        "previousValue": {
+          "key": "value"
+        },
+        "status": "changed"
       }
     ],
-    "message": []
+    "status": "complex"
   },
   {
-    "group2": {
+    "key": "group2",
+    "value": {
       "abc": 12345
     },
-    "message": "was deleted"
+    "status": "deleted"
   },
   {
-    "group3": {
+    "key": "group3",
+    "value": {
       "fee": 100500
     },
-    "message": "was added"
+    "status": "added"
   }
 ]

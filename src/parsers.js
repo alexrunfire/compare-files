@@ -1,25 +1,16 @@
-const yaml = require('js-yaml');
+import yaml from 'js-yaml';
+import ini from 'ini';
 
-const ini = require('ini');
-
-export default (file, filesExt) => {
-  const getParsedFile = (parser) => {
-    try {
-      const fileParsed = parser(file);
-      return fileParsed;
-    } catch (e) {
-      throw new Error('Invalid data!');
-    }
-  };
-  switch (filesExt) {
+export default (stringData, dataType) => {
+  switch (dataType) {
     case '.json':
-      return getParsedFile(JSON.parse);
+      return JSON.parse(stringData);
 
     case '.yml':
-      return getParsedFile(yaml.safeLoad);
+      return yaml.safeLoad(stringData);
 
     case '.ini':
-      return getParsedFile(ini.parse);
+      return ini.parse(stringData);
 
     default:
       throw new Error('Unknown extension!');
