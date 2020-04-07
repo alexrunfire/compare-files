@@ -1,13 +1,8 @@
-#!/usr/bin/env node
 import path from 'path';
 import fs from 'fs';
 import buildDiff from './buildDiff';
-import parse from './parsers';
-import getTap from './formatters/tap';
-import getStylish from './formatters/stylish';
-import getJSON from './formatters/json';
-
-const formatters = { tap: getTap, stylish: getStylish, json: getJSON };
+import parse from './parse';
+import getFormat from './formatters';
 
 const getAbsolutePath = (relativePath) => path.resolve(process.cwd(), relativePath);
 const getFilePath = (pathToFile) => (path.isAbsolute(pathToFile)
@@ -23,6 +18,6 @@ export default (firstConfig, secondConfig, format) => {
   const firstFileParsed = parse(firstFile, firstFileExt);
   const secondFileParsed = parse(secondFile, secondFileExt);
   const diff = buildDiff(firstFileParsed, secondFileParsed);
-  const formatter = formatters[format];
+  const formatter = getFormat(format);
   return formatter(diff);
 };
