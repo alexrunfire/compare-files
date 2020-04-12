@@ -4,4 +4,4 @@ import getJSON from './json';
 
 const formatters = { tap: getTap, stylish: getStylish, json: getJSON };
 
-export default (format) => formatters[format];
+export default (dataFormat) => formatters[dataFormat];

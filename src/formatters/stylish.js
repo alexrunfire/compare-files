@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import _ from 'lodash';
 
 const makeQuotes = (value) => (_.isString(value) ? `'${value}'` : value);
@@ -12,12 +10,12 @@ const getDiff = (diff, acc) => {
   const filtDiff = diff.filter(({ status }) => !(status === 'unchanged'));
   const stylishForm = filtDiff.map((item) => {
     const {
-      status, key, value, previousValue,
+      status, key, children, value, previousValue,
     } = item;
     const property = [...acc, key].join('.');
     switch (status) {
       case 'complex':
-        return getDiff(value, [...acc, key]);
+        return getDiff(children, [...acc, key]);
 
       case 'changed':
         return getChanged(property, previousValue, value);

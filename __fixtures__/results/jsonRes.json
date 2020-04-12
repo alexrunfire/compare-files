@@ -1,28 +1,10 @@
 [
   {
     "key": "common",
-    "value": [
-      {
-        "key": "setting1",
-        "value": "Value 1",
-        "status": "unchanged"
-      },
-      {
-        "key": "setting2",
-        "value": 200,
-        "status": "deleted"
-      },
-      {
-        "key": "setting3",
-        "value": {
-          "key": "value"
-        },
-        "previousValue": true,
-        "status": "changed"
-      },
+    "children": [
       {
         "key": "setting6",
-        "value": [
+        "children": [
           {
             "key": "key",
             "value": "value",
@@ -35,6 +17,19 @@
           }
         ],
         "status": "complex"
+      },
+      {
+        "key": "setting1",
+        "value": "Value 1",
+        "status": "unchanged"
+      },
+      {
+        "key": "setting3",
+        "value": {
+          "key": "value"
+        },
+        "previousValue": true,
+        "status": "changed"
       },
       {
         "key": "follow",
@@ -52,23 +47,28 @@
           "key5": "value5"
         },
         "status": "added"
+      },
+      {
+        "key": "setting2",
+        "value": 200,
+        "status": "deleted"
       }
     ],
     "status": "complex"
   },
   {
     "key": "group1",
-    "value": [
+    "children": [
+      {
+        "key": "foo",
+        "value": "bar",
+        "status": "unchanged"
+      },
       {
         "key": "baz",
         "value": "bars",
         "previousValue": "bas",
         "status": "changed"
-      },
-      {
-        "key": "foo",
-        "value": "bar",
-        "status": "unchanged"
       },
       {
         "key": "nest",
@@ -82,17 +82,17 @@
     "status": "complex"
   },
   {
-    "key": "group2",
-    "value": {
-      "abc": 12345
-    },
-    "status": "deleted"
-  },
-  {
     "key": "group3",
     "value": {
       "fee": 100500
     },
     "status": "added"
+  },
+  {
+    "key": "group2",
+    "value": {
+      "abc": 12345
+    },
+    "status": "deleted"
   }
 ]

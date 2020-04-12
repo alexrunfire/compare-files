@@ -1,8 +1,6 @@
-#!/usr/bin/env node
-
 import _ from 'lodash';
 
-const makeDeep = (deepLevel, sign = ' ') => (deepLevel === 0
+const makeSpaces = (deepLevel, sign = ' ') => (deepLevel === 0
   ? '' : `${sign} `.padStart(deepLevel * 4));
 
 const stringify = (value, deepLevel) => {
@@ -12,38 +10,38 @@ const stringify = (value, deepLevel) => {
   const valToArr = Object.entries(value);
   const result = valToArr.map(([key, newValue]) => (
     _.isObject(newValue)
-      ? `${makeDeep(deepLevel)}${key}: ${stringify(newValue, deepLevel + 1)}`
-      : `${makeDeep(deepLevel)}${key}: ${newValue}`));
-  return ['{', ...result, `${makeDeep(deepLevel - 1)}}`].join('\n');
+      ? `${makeSpaces(deepLevel)}${key}: ${stringify(newValue, deepLevel + 1)}`
+      : `${makeSpaces(deepLevel)}${key}: ${newValue}`));
+  return ['{', ...result, `${makeSpaces(deepLevel - 1)}}`].join('\n');
 };
 
 const getDiff = (diff, deepLevel) => {
   const tapForm = diff.map((item) => {
     const {
-      status, key, value, previousValue,
+      status, key, children, value, previousValue,
     } = item;
     switch (status) {
       case 'complex':
-        return `${makeDeep(deepLevel)}${key}: ${getDiff(value, deepLevel + 1)}`;
+        return `${makeSpaces(deepLevel)}${key}: ${getDiff(children, deepLevel + 1)}`;
 
       case 'unchanged':
-        return `${makeDeep(deepLevel)}${key}: ${value}`;
+        return `${makeSpaces(deepLevel)}${key}: ${value}`;
 
       case 'changed':
-        return [`${makeDeep(deepLevel, '+')}${key}: ${stringify(value, deepLevel + 1)}`,
-          `${makeDeep(deepLevel, '-')}${key}: ${stringify(previousValue, deepLevel + 1)}`].join('\n');
+        return [`${makeSpaces(deepLevel, '+')}${key}: ${stringify(value, deepLevel + 1)}`,
+          `${makeSpaces(deepLevel, '-')}${key}: ${stringify(previousValue, deepLevel + 1)}`].join('\n');
 
       case 'deleted':
-        return `${makeDeep(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`;
+        return `${makeSpaces(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`;
 
       case 'added':
-        return [`${makeDeep(deepLevel, '+')}${key}`, stringify(value, deepLevel + 1)].join(': ');
+        return [`${makeSpaces(deepLevel, '+')}${key}`, stringify(value, deepLevel + 1)].join(': ');
 
       default:
-        throw new Error('Error!');
+        throw new Error(`Invalid object status: ${status}!`);
     }
   });
-  return ['{', ...tapForm, `${makeDeep(deepLevel - 1)}}`].join('\n');
+  return ['{', ...tapForm, `${makeSpaces(deepLevel - 1)}}`].join('\n');
 };
 
 export default (diff) => getDiff(diff, 1);

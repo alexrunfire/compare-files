@@ -11,9 +11,9 @@ let tapRes;
 let stylishRes;
 let jsonRes;
 beforeAll(() => {
-  tapRes = fs.readFileSync(getRelativePath('results/tap'), 'utf-8');
-  stylishRes = fs.readFileSync(getRelativePath('results/stylish'), 'utf-8');
-  jsonRes = fs.readFileSync(getRelativePath('results/json'), 'utf-8');
+  tapRes = fs.readFileSync(getRelativePath('results/tapRes.txt'), 'utf-8');
+  stylishRes = fs.readFileSync(getRelativePath('results/stylishRes.txt'), 'utf-8');
+  jsonRes = fs.readFileSync(getRelativePath('results/jsonRes.json'), 'utf-8');
 });
 
 describe.each([
