@@ -1,18 +1,6 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
 
-export default (textData, textDataType) => {
-  switch (textDataType) {
-    case '.json':
-      return JSON.parse(textData);
+const parsers = { '.json': JSON.parse, '.yml': yaml.safeLoad, '.ini': ini.parse };
 
-    case '.yml':
-      return yaml.safeLoad(textData);
-
-    case '.ini':
-      return ini.parse(textData);
-
-    default:
-      throw new Error(`Unknown type of text data: ${textDataType}!`);
-  }
-};
+export default (textData, parserType) => parsers[parserType](textData);
