@@ -1,19 +1,7 @@
 import yaml from 'js-yaml';
-import ini from 'ini';
-import getFullParsing from './fullParseIni';
 
-export default (textData, parserType) => {
-  switch (parserType) {
-    case '.json':
-      return JSON.parse(textData);
+import parseIni from './fullParseIni';
 
-    case '.yml':
-      return yaml.safeLoad(textData);
+const parsers = { '.json': JSON.parse, '.yml': yaml.safeLoad, '.ini': parseIni };
 
-    case '.ini':
-      return getFullParsing(ini.parse(textData));
-
-    default:
-      throw new Error(`Unknown type of parser: ${parserType}!`);
-  }
-};
+export default (textData, parserName) => parsers[parserName](textData);

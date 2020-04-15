@@ -1,15 +1,16 @@
 import _ from 'lodash';
+import ini from 'ini';
 
 const isNumInStr = (value) => !_.isNaN(parseInt(value, 10));
 
 const makevalue = (value) => (isNumInStr(value) ? Number(value) : value);
 
-const getFullParsing = (objectData) => {
+const getIniParsing = (objectData) => {
   const objectToArr = Object.entries(objectData);
   return objectToArr.reduce(
     (acc, [key, value]) => (_.isObject(value)
-      ? { ...acc, [key]: getFullParsing(value) }
+      ? { ...acc, [key]: getIniParsing(value) }
       : { ...acc, [key]: makevalue(value, acc) }), objectData,
   );
 };
-export default getFullParsing;
+export default (textData) => getIniParsing(ini.parse(textData));

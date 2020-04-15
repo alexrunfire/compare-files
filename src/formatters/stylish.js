@@ -27,7 +27,7 @@ const getDiff = (diff, acc) => {
         return getAdded(property, value);
 
       default:
-        throw new Error('Error!');
+        throw new Error(`Invalid object status: ${status}!`);
     }
   });
   return stylishForm.join('\n');
