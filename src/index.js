@@ -9,10 +9,10 @@ export default (firstConfig, secondConfig, dataFormat) => {
   const secondFilePath = path.resolve(secondConfig);
   const firstFileData = fs.readFileSync(firstFilePath, 'utf-8');
   const secondFileData = fs.readFileSync(secondFilePath, 'utf-8');
-  const firstFileExt = path.extname(firstConfig);
-  const secondFileExt = path.extname(secondConfig);
-  const firstFileParsed = parse(firstFileData, firstFileExt);
-  const secondFileParsed = parse(secondFileData, secondFileExt);
+  const firstFileFormat = path.extname(firstConfig).slice(1);
+  const secondFileFormat = path.extname(secondConfig).slice(1);
+  const firstFileParsed = parse(firstFileData, firstFileFormat);
+  const secondFileParsed = parse(secondFileData, secondFileFormat);
   const diff = buildDiff(firstFileParsed, secondFileParsed);
   const format = getFormat(dataFormat);
   return format(diff);
