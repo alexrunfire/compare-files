@@ -5,23 +5,26 @@ const buildDiff = (firstObject, secondObject) => {
   const secondObjKeys = Object.keys(secondObject);
   const uniqKeys = _.uniq([...firstObjKeys, ...secondObjKeys]);
   return uniqKeys.map((key) => {
+    let item;
     const firstObjValue = firstObject[key];
     const secondObjValue = secondObject[key];
     if (_.isObject(firstObjValue) && _.isObject(secondObjValue)) {
-      return { key, children: buildDiff(firstObjValue, secondObjValue), status: 'complex' };
-    }
+      item = { key, children: buildDiff(firstObjValue, secondObjValue), status: 'complex' };
+    } else
     if (firstObjValue === secondObjValue) {
-      return { key, value: firstObjValue, status: 'unchanged' };
-    }
+      item = { key, value: firstObjValue, status: 'unchanged' };
+    } else
     if (!_.has(firstObject, key) && _.has(secondObject, key)) {
-      return { key, value: secondObjValue, status: 'added' };
-    }
+      item = { key, value: secondObjValue, status: 'added' };
+    } else
     if (_.has(firstObject, key) && !_.has(secondObject, key)) {
-      return { key, value: firstObjValue, status: 'deleted' };
+      item = { key, value: firstObjValue, status: 'deleted' };
+    } else {
+      item = {
+        key, value: secondObjValue, previousValue: firstObjValue, status: 'changed',
+      };
     }
-    return {
-      key, value: secondObjValue, previousValue: firstObjValue, status: 'changed',
-    };
+    return item;
   });
 };
 export default buildDiff;
