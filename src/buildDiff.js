@@ -4,7 +4,7 @@ const buildDiff = (firstObject, secondObject) => {
   const firstObjKeys = Object.keys(firstObject);
   const secondObjKeys = Object.keys(secondObject);
   const uniqKeys = _.uniq([...firstObjKeys, ...secondObjKeys]);
-  const resultDiff = uniqKeys.map((key) => {
+  return uniqKeys.map((key) => {
     const firstObjValue = firstObject[key];
     const secondObjValue = secondObject[key];
     if (_.has(firstObject, key) && !_.has(secondObject, key)) {
@@ -23,6 +23,5 @@ const buildDiff = (firstObject, secondObject) => {
       key, currentValue: secondObjValue, previousValue: firstObjValue, status: 'changed',
     };
   });
-  return resultDiff;
 };
 export default buildDiff;
