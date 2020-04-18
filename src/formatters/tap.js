@@ -18,7 +18,7 @@ const stringify = (value, deepLevel) => {
 const getDiff = (diff, deepLevel) => {
   const tapForm = diff.map((item) => {
     const {
-      status, key, children, value, previousValue,
+      status, key, children, value, currentValue, previousValue,
     } = item;
     switch (status) {
       case 'complex':
@@ -28,7 +28,7 @@ const getDiff = (diff, deepLevel) => {
         return `${makeSpaces(deepLevel)}${key}: ${value}`;
 
       case 'changed':
-        return [`${makeSpaces(deepLevel, '+')}${key}: ${stringify(value, deepLevel + 1)}`,
+        return [`${makeSpaces(deepLevel, '+')}${key}: ${stringify(currentValue, deepLevel + 1)}`,
           `${makeSpaces(deepLevel, '-')}${key}: ${stringify(previousValue, deepLevel + 1)}`].join('\n');
 
       case 'deleted':

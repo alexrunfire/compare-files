@@ -14,7 +14,7 @@
       },
       {
         "key": "setting3",
-        "value": {
+        "currentValue": {
           "key": "value"
         },
         "previousValue": true,
@@ -61,7 +61,7 @@
     "children": [
       {
         "key": "baz",
-        "value": "bars",
+        "currentValue": "bars",
         "previousValue": "bas",
         "status": "changed"
       },
@@ -72,7 +72,7 @@
       },
       {
         "key": "nest",
-        "value": "str",
+        "currentValue": "str",
         "previousValue": {
           "key": "value"
         },
