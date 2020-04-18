@@ -1,7 +1,10 @@
 import _ from 'lodash';
 
 const buildDiff = (firstObject, secondObject) => {
-  const makeElement = (key) => {
+  const firstObjKeys = Object.keys(firstObject);
+  const secondObjKeys = Object.keys(secondObject);
+  const uniqKeys = _.uniq([...firstObjKeys, ...secondObjKeys]);
+  return uniqKeys.map((key) => {
     const firstObjValue = firstObject[key];
     const secondObjValue = secondObject[key];
     if (_.has(firstObject, key) && !_.has(secondObject, key)) {
@@ -19,10 +22,6 @@ const buildDiff = (firstObject, secondObject) => {
     return {
       key, currentValue: secondObjValue, previousValue: firstObjValue, status: 'changed',
     };
-  };
-  const firstObjKeys = Object.keys(firstObject);
-  const secondObjKeys = Object.keys(secondObject);
-  const uniqKeys = _.uniq([...firstObjKeys, ...secondObjKeys]);
-  return uniqKeys.map((key) => makeElement(key));
+  });
 };
 export default buildDiff;
