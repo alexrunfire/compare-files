@@ -7,8 +7,8 @@ const stringify = (value, deepLevel) => {
   if (!_.isObject(value)) {
     return value;
   }
-  const valToArr = Object.entries(value);
-  const result = valToArr.map(([key, newValue]) => (
+  const valueItems = Object.entries(value);
+  const result = valueItems.map(([key, newValue]) => (
     _.isObject(newValue)
       ? `${makeSpaces(deepLevel)}${key}: ${stringify(newValue, deepLevel + 1)}`
       : `${makeSpaces(deepLevel)}${key}: ${newValue}`));
@@ -35,7 +35,7 @@ const getDiff = (diff, deepLevel) => {
         return `${makeSpaces(deepLevel, '-')}${key}: ${stringify(value, deepLevel + 1)}`;
 
       case 'added':
-        return [`${makeSpaces(deepLevel, '+')}${key}`, stringify(value, deepLevel + 1)].join(': ');
+        return `${makeSpaces(deepLevel, '+')}${key}: ${stringify(value, deepLevel + 1)}`;
 
       default:
         throw new Error(`Invalid object status: ${status}!`);
