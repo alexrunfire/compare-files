@@ -3,7 +3,7 @@ import _ from 'lodash';
 const buildDiff = (firstObject, secondObject) => {
   const firstObjKeys = Object.keys(firstObject);
   const secondObjKeys = Object.keys(secondObject);
-  const keys = _.uniq([...firstObjKeys, ...secondObjKeys]);
+  const keys = _.union(firstObjKeys, secondObjKeys);
   return keys.map((key) => {
     const firstObjValue = firstObject[key];
     const secondObjValue = secondObject[key];
